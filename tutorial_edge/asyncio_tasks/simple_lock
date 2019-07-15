@@ -1,0 +1,29 @@
+import asyncio
+import time
+
+async def myWorker(lock):
+    print("Attempting to attain lock")
+
+    # acquire lock
+    with await lock:
+        # Run critical section code
+        print("Currently Locked")
+        time.sleep(2)
+    # ourt worker releases lock at this point
+    print("Unlock Critical Section")
+
+async def main():
+    # instantiate lock
+    lock = asyncio.Lock()
+
+    # await the exectution of 2 myworker coroutines
+    # each with our same lock instance passed in
+    await asyncio.gather(*[myWorker(lock), myWorker(lock)])
+
+# start up a simple loop and run oiur main  function
+# until it is complete
+
+loop = asyncio.get_event_loop()
+loop.run_until_complete(main())
+print("All Tasks completed!")
+loop.close()
