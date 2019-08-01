@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Amit App</title>
+</head>
+<body>
+    <input type="text" id="some_message" />
+    <button onclick="sendMsg()">Send</button>
+    <div id="text_render">
+
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
+    <script>
+        const url = window.location.origin;
+        const socket = io(url);
+
+        function sendMsg() {
+            const value = document.getElementById("some_message").value;
+            socket.emit("message", value);
+        }
+
+        socket.on("message", function(data) {
+            var paragarph_element = document.createElement("p");
+            paragarph_element.innerHTML = data;
+            //document.getElementById("text_render").innerHTML = data;
+            document.getElementById("text_render").appendChild(paragarph_element);
+        });
+    </script>
+</body>
+</html>
